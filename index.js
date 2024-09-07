@@ -10,6 +10,7 @@ const morgan = require("morgan")
 const connectDb = require("./src/db/db")
 const app = express()
 const signup = require("./src/routes/signup.routes")
+const adminRoutes = require("./src/routes/admin.routes")
 
 app.use(morgan("dev"))
 app.use(express.json())
@@ -38,13 +39,8 @@ app.get("/dashboard", (req, res) => {
 })
 
 app.use("/api/v1", signup)
+app.use("/api/v1", adminRoutes)
 
-
-
-// app.use((req, res, next) => {
-//   res.status(404).json({ error: `🔥 resource not found : ${req.originalUrl}` });
-//   next();
-// });
 
 
 const port = process.env.PORT || 3000

@@ -5,6 +5,7 @@ const mailer = require("../nodemailer/mailer")
 const validator = require("validator")
 const crypto = require("crypto")
 const axios = require("axios")
+const cloudinary = require("../utils/cloudinary")
 
 const userSignup =  async (req, res) => {
   const {profileName, email, password, confirmPassword, phoneNumber, recaptcha} = req.body
@@ -170,9 +171,26 @@ const resetPassword = async (req, res) => {
   }
 };
 
+
+const uploadProfilePicture = async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'profile_pictures',  
+      public_id: `profile_${req.user._id}`,
+    });
+
+    await User.findByIdAndUpdate(req.user._id, { profilePicture: result.secure_url });
+
+    res.status(200).json({ message: 'Profile picture uploaded successfully!', profilePicture: result.secure_url });
+  } catch (error) {
+    res.status(500).json({ error: 'Error uploading profile picture' });
+  }
+};
+
 module.exports = {
   userSignup,
   userLogin,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  uploadProfilePicture
 }

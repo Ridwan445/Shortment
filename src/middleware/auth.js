@@ -32,8 +32,15 @@ const hostMiddleware = async (req, res, next) => {
 };
 
 const userMiddleware = async (req, res, next) => {
-  if (req.user.role !== "user") {
-    return res.status(400).json({ message: "ONLY USER CAN USE THIS ROUTES" });
+  if (req.user.role !== "guest") {
+    return res.status(400).json({ message: "ONLY GUEST CAN USE THIS ROUTES" });
+  }
+  next();
+};
+
+const adminMiddleware = async (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.status(400).json({ message: "ONLY ADMIN CAN USE THIS ROUTES" });
   }
   next();
 };
@@ -41,5 +48,6 @@ const userMiddleware = async (req, res, next) => {
 module.exports =  {
   authenticate,
   hostMiddleware,
-  userMiddleware
+  userMiddleware,
+  adminMiddleware
 };

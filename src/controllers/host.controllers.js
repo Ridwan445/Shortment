@@ -1,4 +1,4 @@
-const Property = require('../models/host.model');
+const Property = require('../models/property.models');
 const cloudinary = require("../utils/cloudinary")
 const upload = require("../utils/multer")
 
@@ -18,7 +18,8 @@ exports.createProperty =  upload.single('photo'), async (req, res) => {
       beds,
       price,
       amenities,
-      photo: result.secure_url
+      images: result.secure_url,
+      status: 'pending'
     });
 
     await newProperty.save();

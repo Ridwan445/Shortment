@@ -15,9 +15,10 @@ const signupSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: true
   },
-  role: { type: String, enum: ['user', 'host'], default: 'user' },
+  role: { type: String, enum: ['guest', 'host', 'admin'], default: 'guest' },
   phoneNumber: {
     type: String,
     required: true
@@ -28,6 +29,10 @@ const signupSchema = new mongoose.Schema({
   },
   newPassword: {
     type: String
+  },
+  profilePicture: {
+    type: String,
+    default: ""
   }
 }, {
   timestamps: true,

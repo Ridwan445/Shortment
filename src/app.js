@@ -7,9 +7,9 @@ const path = require("path")
 dotenv.config()
 
 const morgan = require("morgan")
-const connectDb = require("./src/db/db")
+const connectDb = require("../src/db/db")
 const app = express()
-const signup = require("./src/routes/signup.routes")
+const signup = require("../src/routes/signup.routes")
 
 app.use(morgan("dev"))
 app.use(express.json())

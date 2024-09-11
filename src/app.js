@@ -2,7 +2,8 @@ const express = require("express")
 const dotenv = require("dotenv")
 const session = require('express-session');
 const passport = require('passport');
-const path = require("path")
+const path = require("path");
+const cors = require("cors")
 
 dotenv.config()
 
@@ -12,6 +13,7 @@ const app = express()
 const signup = require("../src/routes/signup.routes")
 
 app.use(morgan("dev"))
+app.use(cors())
 app.use(express.json())
 app.use(session({ secret: 'your secret', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());

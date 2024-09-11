@@ -5,7 +5,7 @@ const propertySchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  description: {
+  HouseAdress: {
     type: String,
     required: true
   },
@@ -35,6 +35,10 @@ const propertySchema = new mongoose.Schema({
     enum: ['declined', 'approved', 'pending'],
     default: "pending"
   },
+  securityFee: {
+    type: Number,
+    default: 0
+  }
 }, {
   timestamps: true
 });

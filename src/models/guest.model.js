@@ -62,15 +62,5 @@ const  guestSchema = new mongoose.Schema ({
 
 });
 
-
-
-
-
-
-
-
 const guest = mongoose.model('guest', guestSchema);
-
-
-
 module.exports = guest;

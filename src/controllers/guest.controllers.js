@@ -1,6 +1,5 @@
-const guest = require('../models/guest.model') 
+const Property = require("../models/property.models")
 const cloudinary = require('../utils/cloudinary')
-const upload = require('../utils/multer')
 
 
 const uploadvalidId =  async (req, res) => {
@@ -27,7 +26,7 @@ const uploadvalidId =  async (req, res) => {
 
 const fetchProperties = async (req, res) => {
   try {
-    const allProperties = await property.find({});
+    const allProperties = await Property.find({});
 
     return res.status(200).json({ message: 'Properties:', allProperties});
 
@@ -37,20 +36,18 @@ const fetchProperties = async (req, res) => {
 }
 
 const search = async (req, res) => {
-    try {
-        const { location, description } = req.query;
-        
+try {
+    const { location, description } = req.query;
+    
 
-        const searchResult = await property.findOne({location: location, description: description, beds: beds })
+    const searchResult = await Property.findOne({location: location, description: description, beds: beds })
 
-        if (!property){
-            return res.status(404).json({ message: 'property not found'})
-        }
-
-
-    } catch (error) {
-        return res.status(500).json('internal sever error')
+    if (!property){
+        return res.status(404).json({ message: 'property not found'})
     }
+} catch (error) {
+    return res.status(500).json('internal sever error')
+}
 }
 
 
@@ -106,14 +103,24 @@ const booking =  async (req, res) => {
   }
 } 
 
-   const history = async (req, res) => {
-    try {
-      
-      
-    } catch (error) {
-      
+const history = async (req, res) => {
+  try {
+    const  { userId } = req.params; 
+
+    const result = await booking.find({ userId });
+
+    if (!booking || booking.length === 0) {
+      return res.status(404).json({ message: 'No bookings for this user', result });
     }
-   }
+    res.status(200).json({message: "Booking received"})
+    
+  } catch (error) {
+    console.log( 'error fetching booking');
+    return res.status(500).json({ message: 'internal server error' });
+    
+  }
+ }
+
 
   
 module.exports = { search, booking, fetchProperties, uploadvalidId, history}

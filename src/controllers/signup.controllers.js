@@ -6,6 +6,7 @@ const validator = require("validator")
 const crypto = require("crypto")
 const axios = require("axios")
 const cloudinary = require("../utils/cloudinary")
+const guest = require("../models/guest.model")
 
 const userSignup =  async (req, res) => {
   const {profileName, email, password, confirmPassword, phoneNumber, recaptcha} = req.body
@@ -171,21 +172,26 @@ const resetPassword = async (req, res) => {
   }
 };
 
-
 const uploadProfilePicture = async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
     const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'profile_pictures',  
-      public_id: `profile_${req.user._id}`,
+      folder: 'profile_pictures',
+      public_id: `profile_${req.user}_${Date.now()}`,
     });
 
-    await User.findByIdAndUpdate(req.user._id, { profilePicture: result.secure_url });
+    await guest.findByIdAndUpdate(req.user, { profilePicture: result.secure_url });
 
     res.status(200).json({ message: 'Profile picture uploaded successfully!', profilePicture: result.secure_url });
   } catch (error) {
-    res.status(500).json({ error: 'Error uploading profile picture' });
+    console.log(error);
+    res.status(500).json({ error: 'Error uploading profile picture', error });
   }
 };
+
 
 module.exports = {
   userSignup,

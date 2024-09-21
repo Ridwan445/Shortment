@@ -8,6 +8,7 @@ const {authenticate, guestMiddleware} = require('../middleware/auth')
 router.post('/guest/upload',authenticate, guestMiddleware, uploadvalidId)
 router.post('/guest/search,',authenticate, guestMiddleware, search)
 router.post('/guest/fetch',authenticate, guestMiddleware, fetchProperties)
+router.
 
 
 

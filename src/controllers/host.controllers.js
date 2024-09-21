@@ -2,7 +2,7 @@ const Property = require('../models/property.models');
 const cloudinary = require("../utils/cloudinary")
 const upload = require("../utils/multer")
 
-exports.createProperty =  upload.single('photo'), async (req, res) => {
+exports.createProperty =  upload.array('photo', 4), async (req, res) => {
   try {
     const { title, description, location, beds, price, amenities, } = req.body;
 
